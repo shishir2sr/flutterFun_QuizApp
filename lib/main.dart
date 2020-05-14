@@ -30,17 +30,28 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   QuizerBrain qb = QuizerBrain();
   List<Icon> ansIcon = [];
+  int scr =0;
 
   void chkAns(bool usersAns) {
     if (ansIcon.length >= qb.qsLen()) {
       print('fulll');
-      Alert(context: context, title: 'Quize is over', buttons: [
+      Alert(context: context, title: 'Game Over!',
+      desc: 'Your Score: $scr.\n Try again. Thak you :)',
+       buttons: [
         DialogButton(
-            child: Text('Start again!'),
+          color: Colors.teal[500],
+            child: Text('Start again!',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 20
+            ),
+            ),
             onPressed: () {
               setState(() {
                 qb.resetState();
                 ansIcon = [];
+                scr=0;
               });
               Navigator.pop(context);
             })
@@ -51,6 +62,7 @@ class _QuizPageState extends State<QuizPage> {
           Icons.check,
           color: Colors.green,
         ));
+        scr++;
       } else {
         ansIcon.add(Icon(
           Icons.close,
