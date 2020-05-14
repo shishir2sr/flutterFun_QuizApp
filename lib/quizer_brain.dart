@@ -22,7 +22,7 @@ class QuizerBrain {
 
   
    
-   int qsLen()=> (_ques.length+1);
+   int qsLen()=> (_ques.length);
 
   void resetState(){
     _p=0;

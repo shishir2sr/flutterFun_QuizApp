@@ -30,8 +30,9 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   QuizerBrain qb = QuizerBrain();
   List<Icon> ansIcon = [];
-  void checFullness() {
-    if (ansIcon.length == qb.qsLen()) {
+
+  void chkAns(bool usersAns) {
+    if (ansIcon.length >= qb.qsLen()) {
       print('fulll');
       Alert(context: context, title: 'Quize is over', buttons: [
         DialogButton(
@@ -45,33 +46,22 @@ class _QuizPageState extends State<QuizPage> {
             })
       ]).show();
     } else {
-      print('all okay');
-      setState(() {
-        qb.changeState();
-      });
+      if (usersAns == qb.getAns()) {
+        ansIcon.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      } else {
+        ansIcon.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+      }
     }
-  }
-
-  void chkAns(bool usersAns) {
-
-    
-
-
-
-
-
-
-    if (usersAns == qb.getAns()) {
-      ansIcon.add(Icon(
-        Icons.check,
-        color: Colors.green,
-      ));
-    } else {
-      ansIcon.add(Icon(
-        Icons.close,
-        color: Colors.red,
-      ));
-    }
+    print('all okay');
+    setState(() {
+      qb.changeState();
+    });
   }
 
   @override
@@ -111,7 +101,6 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 chkAns(true);
-                checFullness();
 
                 //The user picked true.
               },
@@ -132,7 +121,6 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 chkAns(false);
-                checFullness();
 
                 //The user picked false.
               },
