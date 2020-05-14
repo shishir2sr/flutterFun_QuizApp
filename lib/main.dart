@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+//import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quizer_brain.dart';
 
 void main() => runApp(Quizzler());
@@ -27,24 +29,51 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   QuizerBrain qb = QuizerBrain();
-  List<Icon> ansIcon =[];
-  void chkAns(bool usersAns){
-    if(usersAns==qb.getAns())
-    {
+  List<Icon> ansIcon = [];
+  void checFullness() {
+    if (ansIcon.length == qb.qsLen()) {
+      print('fulll');
+      Alert(context: context, title: 'Quize is over', buttons: [
+        DialogButton(
+            child: Text('Start again!'),
+            onPressed: () {
+              setState(() {
+                qb.resetState();
+                ansIcon = [];
+              });
+              Navigator.pop(context);
+            })
+      ]).show();
+    } else {
+      print('all okay');
+      setState(() {
+        qb.changeState();
+      });
+    }
+  }
+
+  void chkAns(bool usersAns) {
+
+    
+
+
+
+
+
+
+    if (usersAns == qb.getAns()) {
       ansIcon.add(Icon(
         Icons.check,
         color: Colors.green,
       ));
-    }
-
-    else{
+    } else {
       ansIcon.add(Icon(
         Icons.close,
         color: Colors.red,
       ));
-
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -82,9 +111,8 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 chkAns(true);
-                setState(() {
-                  qb.changeState();
-                });
+                checFullness();
+
                 //The user picked true.
               },
             ),
@@ -104,18 +132,16 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 chkAns(false);
-                setState(() {
-                  qb.changeState();
-                });
+                checFullness();
+
                 //The user picked false.
               },
             ),
           ),
         ),
-       Row(
-         children: ansIcon,
-       )
-        
+        Row(
+          children: ansIcon,
+        )
       ],
     );
   }
